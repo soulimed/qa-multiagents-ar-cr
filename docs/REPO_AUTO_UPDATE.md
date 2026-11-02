@@ -30,3 +30,7 @@ Auth: Git Credential Manager, or env `GITHUB_TOKEN` / `GH_TOKEN` with `repo` sco
 ## Cursor rule
 
 `.cursor/rules/repo-auto-sync.mdc` — alwaysApply so agents do not “forget” to push teachings.
+
+## Team / bidirectional
+
+See **[TEAM_KNOWLEDGE_SYNC.md](TEAM_KNOWLEDGE_SYNC.md)** — how Regnology colleagues clone, teach, push, and how your agent picks up their knowledge (and vice versa).

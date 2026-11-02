@@ -1,0 +1,81 @@
+# WARNING - PS overlay consumers: do NOT copy this file.
+# It lists All-Company URNs only. Copying it over a PS-derived allowlist
+# silently drops PS-only entries (for example
+# procedure:onboard-external-agent-to-pack) and `spec-kitty doctor doctrine`
+# then fails closed. Copy the doctrine-ps setup template (the union) instead.
+#
+# Recommended consumer fragment for Spec Kitty FR-012 (built-in override sanction).
+#
+# Copy to the engagement repo (fetch does NOT install this file):
+#
+#   mkdir -p .kittify/doctrine
+#   cp "$PACK_ROOT/templates/setup/replaceable-builtins.yaml" \
+#     .kittify/doctrine/replaceable-builtins.yaml
+#
+# PACK_ROOT is the installed All-Company pack directory, e.g.
+#   $SPEC_KITTY_PACK_HOME/doctrine-org/pack
+#   ${SPEC_KITTY_PACK_HOME}/doctrine-org/pack
+#
+# Then run `spec-kitty doctor doctrine` and commit the copied file with
+# `.kittify/config.yaml` / charter.
+#
+# This is not live doctrine. Same-kind org-over-builtin replacements stay
+# permitted by merge; this list is the per-repo sanction. Absent/incomplete
+# file ⇒ doctor RC=1 (FR-012 fail-closed).
+#
+# Keep in sync with this repo's `.kittify/doctrine/replaceable-builtins.yaml`
+# (enforced by tools/scripts/check-replaceable-builtins-sync.py, quality-check
+# gate [4/8]). Do not list org-on-org collisions. The six mission_step_contract
+# entries are listed because spec-kitty-cli 3.2.6.2 doctor reports the promoted
+# step contracts as org-over-builtin overrides.
+replaceable_builtins:
+  - urn: agent_profile:analyst-annie
+    reason: All-Company overlay of the built-in analyst profile for Regnology elicitation and ATDD handoff.
+  - urn: agent_profile:comms-cleo
+    reason: All-Company professional-communications specialist replacing the built-in comms profile.
+  - urn: agent_profile:diagram-daisy
+    reason: All-Company diagramming specialist with pack brand and diagrams-as-code guidance.
+  - urn: agent_profile:lexical-larry
+    reason: All-Company terminology curator replacing the built-in lexical profile.
+  - urn: agent_profile:minutes-mahad
+    reason: >
+      Canonical minutes profile id after the minutes-maker-mahad rename.
+      All-Company Minutes Mahad replaces the Spec Kitty built-in of the same id.
+  - urn: agent_profile:minutes-maker-mahad
+    reason: >
+      Legacy Spec Kitty / consumer allowlist id. Keep sanctioned until all
+      consumers and older CLIs stop shipping minutes-maker-mahad as distinct.
+  - urn: agent_profile:scribe-sally
+    reason: All-Company documentation scribe replacing the built-in scribe profile.
+  - urn: agent_profile:synthesizer-sam
+    reason: All-Company synthesis specialist replacing the built-in synthesizer profile.
+  - urn: directive:ACTION_ITEM_ATTRIBUTION
+    reason: >
+      All-Company minutes hard gate: every recorded action item must name an
+      owner before final chat delivery or optional Confluence publish.
+  - urn: directive:MINUTES_STAND_ALONE
+    reason: >
+      All-Company minutes must be independently legible to readers who were
+      not in the meeting, without the transcript or recording.
+  - urn: paradigm:extract-then-publish-separation
+    reason: >
+      All-Company minutes paradigm: extract/validate/chat-deliver first;
+      Confluence publish is optional and must not re-extract.
+  - urn: procedure:meeting-minutes-pipeline
+    reason: All-Company minutes pipeline (chat-first Markdown, optional Confluence) replaces the built-in procedure.
+  - urn: styleguide:meeting-minutes-format
+    reason: All-Company dual-format minutes styleguide replaces the built-in minutes format.
+  - urn: styleguide:professional-communications
+    reason: All-Company brand-voice styleguide replaces the built-in professional-communications guide.
+  - urn: mission_step_contract:specify
+    reason: All-Company promoted step contract.
+  - urn: mission_step_contract:plan
+    reason: All-Company promoted step contract.
+  - urn: mission_step_contract:tasks
+    reason: All-Company promoted step contract.
+  - urn: mission_step_contract:implement
+    reason: All-Company promoted step contract.
+  - urn: mission_step_contract:review
+    reason: All-Company promoted step contract.
+  - urn: mission_step_contract:research-synthesis
+    reason: All-Company promoted step contract.

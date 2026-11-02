@@ -1,0 +1,15 @@
+schema_version: 2.0.0
+catalog:
+  mission: ''
+  template_set: ''
+  languages: []
+  references: []
+overrides: {}
+metadata:
+  generated_at: '2026-10-28T10:11:58Z'
+  bundle_schema_version: 2
+activated_agent_profiles:
+- clerk-clara
+- onboarding-olga
+- qa-qata
+- release-rela

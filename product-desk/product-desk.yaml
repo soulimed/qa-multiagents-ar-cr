@@ -1,0 +1,370 @@
+# Product desk settings -- one file per product.
+#
+# Written by procedure `product-desk-onboarding`, one question at a time.
+# Read by Clara (clerk-clara), Qata (qa-qata), Rela (release-rela) and the
+# product's specialist, if it has one, through toolguide
+# `product-desk-settings` before their first answer.
+#
+# Where it lives: in a `product-desk/` folder, never inside a pack's `pack/`.
+#   <project root>/product-desk/product-desk.yaml     a team with no product pack
+#   <product pack folder>/product-desk/product-desk.yaml  a product with its own pack
+#                                                       (doctrine-product-reg-<domain>-<product>)
+#   <PRODUCT_DESK_HOME>/product-desk.yaml             an explicit override
+#   <PRODUCT_DESK_HOME>/<product-id>/product-desk.yaml   (several products)
+# The search order is in toolguide `product-desk-settings`. Keep a
+# `.gitignore` with `handoffs/` in the folder: consult handoffs stay local.
+#
+# Rules for every value:
+#   - TBD means "not answered yet". Only the step that needs the value stops,
+#     and it names the onboarding section to re-run.
+#   - Hosts, project keys, field ids and names only. No token, password or
+#     connection string, ever -- logins live in Windows Credential Manager or a
+#     gitignored .env, named under `credentials` below.
+#   - Field ids are read from a populated issue on THIS instance, never copied
+#     from another instance.
+#
+# Two kinds of section:
+#   - Shared facts every agent reads: product, tracker, wiki, code, pipeline,
+#     databases, knowledge, people, boundaries, credentials.
+#   - How THIS team works, one block per desk agent under `desk.clara`,
+#     `desk.qata` and `desk.rela`: how it handles tickets, does QAT, cuts a
+#     release and writes release notes. Each capability carries a `status`.
+#     Only `on` switches it on. `off` and `TBD` mean the agent says the
+#     capability is not set up for this product and points to Olga
+#     (procedure product-desk-onboarding, the section named next to it); it
+#     never falls back to another team's way of doing it. One default:
+#     Clara's `tickets` has no status and is on once the tracker section is
+#     set up; `status: off` switches it off.
+
+schema_version: "2.0"
+
+product:
+  id: TBD                     # kebab-case, e.g. my-product
+  name: TBD                   # full product name as customers see it
+  short_name: TBD             # what the team calls it day to day
+  streams: []                 # product lines the same desk covers, e.g. [core, uk, ae]
+  owners:
+    product_owner: TBD
+    release_manager: TBD
+
+desk:
+  # Which generic desk agents this product uses. Qata is off when the team has
+  # no test runs or QAT (every desk.qata capability off).
+  agents:
+    clerk-clara: on
+    qa-qata: TBD              # on | off
+    release-rela: on
+  # Optional specialist that owns diagnosis for this product: any agent id the
+  # project has activated -- a regulatory domain specialist (e.g. liquidity-lena
+  # from doctrine-product-reg-liquidity, credit-carl from a credit domain pack)
+  # or a team's own agent. Clara, Qata and Rela consult it through skill
+  # product-desk-consult, and it consults them the same way. `none` (or TBD)
+  # means no specialist: analysis goes back to the user.
+  specialist:
+    profile_id: TBD           # agent id | none
+    pack: TBD                 # pack that holds the profile
+    product_pack: TBD         # pack that holds this product's knowledge, if any
+  # Progress of the onboarding interview, one entry per section:
+  # done | partial | TBD. Written by the interview, read by every agent.
+  onboarding:
+    product: TBD
+    tracker: TBD
+    wiki: TBD
+    code: TBD
+    data_pipeline: TBD
+    databases: TBD
+    clara_tickets: TBD        # how this team handles tickets
+    qata_qat: TBD             # how this team does QAT
+    rela_release: TBD         # how this team cuts, publishes and announces a release
+    rela_release_notes: TBD   # how this team writes and publishes release notes
+    knowledge: TBD
+    people: TBD
+
+  # ---------------------------------------------------------------- Clara
+  # How this team handles tickets. Asked in onboarding section clara-tickets.
+  # Every capability: status on | off | TBD (tickets: on by default once the
+  # tracker is set up, so no status unless it is off). A capability's `skill` is the
+  # team's own skill that does the work (in its product pack, or installed);
+  # `none` means the agent works from the tracker and these settings alone.
+  clara:
+    tickets:                  # overviews, customer and release questions, hygiene, duplicates
+      # No status: on by default once the tracker section above is set up
+      # (instance, read_tools, projects). Write `status: off` to switch it off.
+      skill: TBD              # the team's ticket-desk skill, or none
+      commands: []            # the skill's commands Clara may run, one line each
+      data: TBD               # a local board export the skill reads instead of live queries, or none
+      workflow: TBD           # states in order, and who moves a ticket between them
+      triage: TBD             # how a new ticket is triaged and assigned
+      priorities: TBD         # priority or severity rules, and any response times
+      blocking: []            # priorities that make an open ticket blocking, e.g. [Blocker, Critical]
+      customer_link: TBD      # how a customer ticket links to the development ticket
+      customer_source: TBD    # where a ticket's customer is read from -- never a ticket title
+      release_dates_from: TBD # tracker versions, or a release project and its field
+      excluded_projects: []   # projects never searched
+      done_means: TBD         # what must be true before a ticket counts as done
+      stale_after_days: TBD
+    lookup:                   # granular search: expand a term into related terms, then search
+      status: TBD
+      terms: []               # what can be looked up, e.g. [class, rule, cell, topic]
+      skill: TBD
+      command: TBD
+      index: []               # asset ids or files the lookup reads
+    branch_check:             # is a ticket on each release line
+      status: TBD
+      repos: []               # ids from code.repos whose release_lines are checked
+      skill: TBD              # or none: search the commit history by code.ticket_key_in_commits
+      command: TBD
+
+  # ---------------------------------------------------------------- Qata
+  # How this team does QAT. Asked in onboarding section qata-qat.
+  qata:
+    qat:                      # reviewing a test run
+      status: TBD
+      process: TBD            # in the team's own words: what runs, when, what is compared, who looks
+      skill: TBD              # the team's QAT skill, or none
+      commands: []
+      ci:
+        system: TBD           # teamcity | jenkins | gitlab | other
+        host: TBD
+      builds: []              # - {id: <build type or job>, what: <one line>}
+      results:
+        location: TBD         # where a run's result files or pages are published
+        file: TBD             # result file name pattern, e.g. <YYMMDD>_Results.zip
+        comparison_modes: []  # names of the comparisons a run produces
+        documentation: []     # asset ids that explain the run and its reports
+      expected_noise: []      # - {what: <exclusion or tolerance>, reason: <why, or where documented>}
+      watchdog:               # an optional daily check page built from the runs
+        status: TBD
+        page: TBD
+        archive: TBD
+        build: TBD
+        source_builds: []
+      attribution: TBD        # how a difference is traced to a commit and a ticket, or none
+      verdicts:               # where Qata writes a verdict Rela's readiness reads
+        location: TBD
+        format: TBD           # e.g. "yaml: verdict PASS | FAIL | CANNOT TELL, run, commit, evidence, tickets"
+      daily_review:           # the one write that may run without a per-use go-ahead
+        status: off           # on only after the team approves it explicitly
+        ticket: TBD           # ticket that collects the daily analysis comment
+        reviewer: TBD         # person or team named in that comment
+        comment_helper: TBD   # script that posts it, with its duplicate guard
+        rerun_when_missing: TBD   # job Qata may re-run when a day's result is missing, on explicit go-ahead
+    fix_verification:         # proving one ticket's fix in a run
+      status: TBD
+      method: TBD             # how this team proves a fix: which run, which comparison, who confirms
+      skill: TBD
+
+  # ---------------------------------------------------------------- Rela
+  # How this team releases. Asked in onboarding sections rela-release and
+  # rela-release-notes.
+  rela:
+    readiness:                # is a fix version ready, and what blocks it
+      status: TBD
+      skill: TBD
+      command: TBD
+      blockers: []            # what blocks a release in this team, one line each
+      release_ticket_project: TBD   # project that holds the release ticket and its date, or none
+    release:                  # moving a release package from build to delivery
+      status: TBD
+      skill: TBD              # the team's publish skill; it owns the shape of profiles_file
+      profiles_file: release-profiles.yaml   # in the same folder; template release-profile.template.yaml
+      steps: []               # - {id: <step>, what: <one line>, kind: write | check}
+      approver: TBD           # who says go for a write step
+      checksum: TBD           # sha256 at every hop | none
+      register: TBD           # where released versions are recorded, or none
+    release_notes:            # writing the customer release notes for a fix version
+      status: TBD
+      skill: TBD
+      tactic: TBD             # the team's authoring tactic, when it has one
+      source_jql: TBD         # the ticket query, with {fix_version} for the full fix-version value
+      done_statuses: []       # statuses the query treats as shipped
+      title: TBD              # page title, with {v}
+      section_heading: TBD    # heading inside the page above the entries, when it differs from the title; none when the title is the only heading
+      intro: TBD              # first line under the title
+      sections: []            # the parts of one ticket's entry, in order, e.g. [Problem, Solution]
+      section_sources: {}     # where each part comes from, e.g. {Problem: description copied}
+      group_by: TBD           # module | issue-type | component | none
+      module_headings: TBD    # asset id or list, when group_by is module
+      missing_evidence: TBD   # what is written when a ticket has no usable source
+      exclusion: TBD          # how a ticket is left out, e.g. the tracker's exclude field
+      style_guide: TBD
+      worked_example: TBD
+      format: TBD             # markdown | docx | excel kit | wiki page
+      output_file: TBD        # file name with {v}
+      publish_targets: []     # in order, e.g. [file, tracker-field, wiki-page, docs-portal]
+      wiki:
+        space: TBD            # space key, or a list when release lines publish to different spaces
+        page_title: TBD       # title pattern with {v}
+        labels: []            # labels a release-notes page must carry
+      exports: []             # other renderings, e.g. [pdf, docx, customer-variant]
+    announcement:             # announcing a release
+      status: TBD
+      channel: TBD            # e.g. Teams chat name
+      owner: TBD              # who posts there when the user is not a member
+      file_glob: TBD          # where the announcement draft is found
+      checks: []              # what is checked in the draft before it goes out
+    documentation:            # keeping the customer documentation in step with a release
+      status: TBD
+      skill: TBD
+      tactic: TBD
+      spaces: []
+    status_pages: []          # - {what: release status, url: <with {v}>, note: <snapshot age, internal only>}
+
+tracker:
+  instance: TBD               # e.g. https://<site>.atlassian.net
+  read_tools: TBD             # MCP tool family that reads this instance, e.g. jira_cloud_*
+  write_env_file: TBD         # env file that holds the REST login (never the login itself)
+  projects: []                # - {key: ABC, role: development | support | releases | other}
+  component: TBD              # component that scopes the product inside a shared project
+  fix_version_pattern: TBD    # full value with {v}, e.g. "My Product {v}"; never the bare number
+  fields:                     # custom-field ids on THIS instance
+    release_notes: TBD
+    exclude_from_release_notes: TBD
+    customer: TBD
+    steps_to_reproduce: TBD
+  markup: TBD                 # cloud-markdown | dc-wiki
+  read_only_archives: []      # instances that still answer but are never a live source
+
+wiki:
+  instance: TBD
+  spaces: []                  # Confluence space keys the product documents in
+
+code:
+  repos: []
+  # - id: main
+  #   host: bitbucket | gitlab
+  #   project: ABC
+  #   slug: my-repo
+  #   clone_env: MY_REPO        # env var pointing at the local clone
+  #   release_lines:            # release line -> branch, for the branch check
+  #     - {name: v1, branch: origin/release-1}
+  #   develop_branch: origin/develop   # or origin/HEAD for the repo's default branch, resolved per run
+  ticket_key_in_commits: TBD  # where commits cite a ticket, e.g. "KEY-123 anywhere in the subject or body" (finds cherry-picks and merges)
+
+pipeline:
+  # How data moves through the product, in order: what arrives, what the
+  # product does to it, what leaves. The specialist needs this to say where a
+  # wrong number was introduced; Qata needs it to know which stages a
+  # reconciliation can compare.
+  input:
+    model: TBD                # the interfacing data model the product receives, by its name
+    owner: TBD                # who owns that model and approves a change to it
+    documentation: TBD        # asset id, wiki page or path where it is specified
+    format: TBD               # tables | files | xml | api
+    delivery: TBD             # how it arrives: a job, a feed, a manual load
+    grain: TBD                # one row is one <what>, and the key that identifies it
+  stages: []                  # intermediate models between the input and the output, in order
+  # - name: <e.g. the engine's own contract model>
+  #   what: <one line: what this stage represents>
+  #   transform: <what turns the stage before into this one>
+  #   persisted: yes | no     # does it survive a run?
+  #   inspect: <table, file or screen where it can be read -- or "cannot be inspected">
+  calculation:
+    engine: TBD               # what computes
+    driven_by: TBD            # what decides the outcome: rule trees, classification, libraries
+    rules_location: TBD       # where those rules live and who changes them
+    customer_configurable: TBD  # what an installation may change
+  preprocessing: []           # before the calculation, beyond plain mapping
+  # - name: <enrichment, derivation, filtering, aggregation, a custom script>
+  #   why: <the reason it exists>
+  #   where: <script, job or module>
+  #   same_for_every_customer: yes | no
+  postprocessing: []          # after the calculation
+  # - name: <manual override, correction, netting, rounding, sign flip, reclassification>
+  #   why: <the reason it exists>
+  #   where: <script, job or module>
+  #   same_for_every_customer: yes | no
+  output:
+    interface: TBD            # what leaves the product, e.g. a SumInterface XML
+    format: TBD
+    consumers: []             # every tool that consumes it, named -- never "the reporting tool"
+    # - name: Abacus360 | RG TNG | RE5 | AgileReporter | <regulator portal> | <this product>
+    #   via: <file drop, job, api>
+    #   owner: <team that owns the far side>
+    #   we_answer_for_its_validations: yes | no
+    submitted_by: TBD         # who submits to the regulator, and from which tool
+  diagram: TBD                # asset id or path of the end-to-end picture, or TBD
+
+databases: []
+# - target: <name the database MCP knows>
+#   engine: sqlserver | oracle | postgres
+#   purpose: <one line>
+#   access: read-only
+# Optional, when the product ships its own database MCP server (paths relative to the
+# folder holding product-desk/; never a host or a login here):
+# database_server:
+#   source: <server source folder>            # install_cursor_wiring.py builds it in place
+#   hosts_file: <local, git-ignored targets file with the real hosts>
+#   hosts_template: <committed targets file with <host> placeholders>
+#   credential_target: "<entry-prefix>/{target}"   # the Credential Manager entry name per target; a name, never a login
+
+knowledge:
+  index: TBD                  # path of the filled product-knowledge-index (template product-knowledge-index.template.md)
+  base: TBD                   # knowledge-base repo, or the packs and their folders: the product pack's assets/ba/<domain>/<product>/ for the specialist and assets/desk/<agent>/ for the desk, each platform pack's assets/platform/<platform>/ (one value or a list)
+  glossary: TBD               # one path or a list, e.g. the product glossary and its domain glossary
+  regulations: []             # regulations or standards the product implements
+  known_issues: TBD
+
+people:
+  contacts: []                # - {topic: <what>, who: <name>}
+
+boundaries:
+  in_scope: []                # products and streams this desk answers for
+  out_of_scope: []            # - {what: <product or topic>, route_to: <owner>, except: <work this desk still does for it>}
+  ask_when_unclear: TBD       # the one question that settles which product a request is about
+
+extensions:
+  # Product doctrine the agents load on top of their own, by artifact id.
+  # These artifacts live in other packs (the product pack, a domain pack), so
+  # they are named here rather than linked in the graph. Leave every list
+  # empty when the team has no product doctrine: the desk works without it.
+  # A skill that does one capability's work is bound under that capability
+  # (desk.<agent>.<capability>.skill), not here; list here only what the agent
+  # loads for every task.
+  packs: []                   # packs the ids below resolve in, e.g. the product pack
+  all:
+    tactics: []
+    toolguides: []
+    skills: []                # agent skills every desk agent may use
+    # Optional, for skill product-desk-comment: how an agent opens and signs
+    # a tracker comment it drafts. Put a `comment:` block under the agent's own
+    # entry below; keys set here under `all` are defaults every agent inherits.
+    # Leave it out and the skill refuses to post for that agent.
+    # comment:
+    #   name: <first name>          # how the agent names itself, e.g. Clara
+    #   opener: "<greeting line>"   # first line of every comment, e.g. "Hi, Clara is here."
+    #   sign_off: "<closing line>"  # last line, e.g. "— This message was drafted and sent by Clara on behalf of {on_behalf_of} · ..."
+    #   on_behalf_of: <person>      # fills {on_behalf_of} in a sign_off; usually set once here under `all`.
+    #                               # A sign_off that names {on_behalf_of} while this is unset is refused.
+    #   card_projects: []           # keys shown as smart links; default: every tracker.projects key
+  clerk-clara:
+    tactics: []
+    toolguides: []
+    helpers: []               # scripts the agent may run outside any one capability
+    skills: []
+  qa-qata:
+    tactics: []
+    toolguides: []
+    helpers: []
+    skills: []
+  release-rela:
+    tactics: []
+    toolguides: []
+    helpers: []
+    skills: []
+  # The specialist named under desk.specialist, by its profile id:
+  # <specialist-id>:
+  #   tactics: []
+  #   toolguides: []
+  #   helpers: []
+  #   skills: []
+
+credentials:
+  # Names only: which Credential Manager entry or .env key holds each login.
+  # Name the file each tool actually reads; when two tools read different
+  # files for one system, give each its own key (e.g. jira_release_notes).
+  jira: TBD
+  wiki: TBD
+  ci: TBD
+  databases: TBD
+  release: TBD                # the publish steps' logins, when the team has a release capability

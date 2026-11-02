@@ -1,0 +1,168 @@
+{
+  "info": {
+    "name": "AR CRGB v10 — lookup + lock return",
+    "description": "GET session → j_security_check → resolve returnId → unlock → lock → verify. Pass username/password via Newman --env-var only.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://10.98.54.18:8080/agilereporter" },
+    { "key": "username", "value": "" },
+    { "key": "password", "value": "" },
+    { "key": "prefix", "value": "ECR" },
+    { "key": "entityCode", "value": "2999" },
+    { "key": "formCode", "value": "CRGB" },
+    { "key": "formVersion", "value": "10" },
+    { "key": "referenceDate", "value": "2026-01-01" },
+    { "key": "returnId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "00 Bootstrap session cookie",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Bootstrap reachable', function () {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 302, 303]);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      }
+    },
+    {
+      "name": "01 Login j_security_check",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login redirected or OK', function () {",
+              "  pm.expect([200, 302, 303]).to.include(pm.response.code);",
+              "});",
+              "const sc = pm.cookies.has('JSESSIONID');",
+              "console.log('JSESSIONID present=' + sc + ' status=' + pm.response.code);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "j_username", "value": "{{username}}" },
+            { "key": "j_password", "value": "{{password}}" }
+          ]
+        },
+        "url": "{{baseUrl}}/j_security_check"
+      },
+      "protocolProfileBehavior": {
+        "followRedirects": true
+      }
+    },
+    {
+      "name": "02 Lookup returnId",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Lookup HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const j = pm.response.json();",
+              "pm.test('Has returnId', function () { pm.expect(j.returnId).to.exist; });",
+              "pm.collectionVariables.set('returnId', String(j.returnId));",
+              "console.log('returnId=' + j.returnId + ' lockedStatus=' + j.lockedStatus);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/rest/api/v1/returns?prefix={{prefix}}&entityCode={{entityCode}}&formCode={{formCode}}&formVersion={{formVersion}}&referenceDate={{referenceDate}}"
+      }
+    },
+    {
+      "name": "03 Unlock (reset if already locked)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Unlock accepted or benign', function () {",
+              "  pm.expect(pm.response.code).to.be.below(500);",
+              "});",
+              "console.log('Unlock status=' + pm.response.code);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/rest/api/v1/returns/{{returnId}}/unlock"
+      }
+    },
+    {
+      "name": "04 Lock return",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Lock HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const j = pm.response.json();",
+              "pm.test('lockedStatus true', function () { pm.expect(j.lockedStatus).to.eql(true); });",
+              "pm.test('returnId matches', function () {",
+              "  pm.expect(String(j.returnId)).to.eql(pm.collectionVariables.get('returnId'));",
+              "});",
+              "console.log('Lock OK returnId=' + j.returnId + ' lockedStatus=' + j.lockedStatus);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/rest/api/v1/returns/{{returnId}}/lock"
+      }
+    },
+    {
+      "name": "05 Verify lockedStatus",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Verify HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const j = pm.response.json();",
+              "pm.test('Still locked', function () { pm.expect(j.lockedStatus).to.eql(true); });",
+              "console.log('Verify lockedStatus=' + j.lockedStatus);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/rest/api/v1/returns?prefix={{prefix}}&entityCode={{entityCode}}&formCode={{formCode}}&formVersion={{formVersion}}&referenceDate={{referenceDate}}"
+      }
+    }
+  ]
+}

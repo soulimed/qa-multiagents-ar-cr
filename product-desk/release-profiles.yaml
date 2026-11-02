@@ -1,0 +1,54 @@
+# Release profiles for one product desk -- `release-profiles.yaml`, next to
+# `product-desk.yaml`. Olga fills it in onboarding section rela-release, on
+# Rela's behalf, and Rela reads it in procedures `release-publish`,
+# `release-notes-generation` and `release-announcement`.
+#
+# Only a team whose `desk.rela.release` is `on` needs this file. Its shape
+# belongs to the team's publish skill (`desk.rela.release.skill`): a team
+# whose skill reads its own shape keeps that shape, and this template is the
+# starting point for a team with no publish skill yet. Rela never fills a
+# step, host or job from another team's profile.
+#
+# Placeholders:
+#   {v}          the release version
+#   {v_}         the version with dots replaced by underscores
+#   {name}       a value passed at run time with --set name=value
+#
+# A value of TBD means "not confirmed yet": the publish step that needs it
+# stops and says so. Fill a TBD from the product's next real release, never by
+# guessing. Hosts and job ids only; credentials never go in this file.
+
+hosts: {}                     # name -> URL, for every system a step reads or writes
+#  internal_repository: https://<host>
+#  delivery: https://<host>
+#  ci: https://<host>
+
+release_root: TBD             # where the release folders are, or none
+
+announcement:
+  channel: TBD
+  owner: TBD
+  file_glob: TBD
+
+products:
+  <product-line-id>:
+    name: TBD
+    confirmed_from: TBD       # first release every value below was read from
+    folder_names: []          # release folder names with {v}
+    artifacts:
+      - name: TBD             # file name with {v}
+        source: TBD           # where the file comes from (repository path or "by hand")
+        publish: true
+    # The path from build to delivery, in order. Each step is a write (gated,
+    # dry-run first, its own go-ahead) or a check (read only).
+    steps: []
+    #  - id: <step id>
+    #    what: <one line>
+    #    kind: write | check
+    #    via: <host name from hosts, and the job or path>
+    #    params: {}
+    checks: []                # artifacts another team publishes: checked, never written
+    release_notes:
+      wiki_title: TBD
+      wiki_spaces: []
+      portal_page: TBD

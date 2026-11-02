@@ -1,0 +1,12 @@
+project:
+  uuid: 786fb610-db7e-4fac-8b88-190b57057e40
+  slug: qa-multiagents-for-ar-&cr
+  node_id: 785a80ad18f6
+  build_id: 680187df-3bb0-58fb-a8ac-1663ea186a2b
+vcs:
+  type: git
+agents:
+  available:
+  - cursor
+  auto_commit: true
+  lint_on_edit: false

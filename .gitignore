@@ -1,0 +1,51 @@
+# Secrets & local credentials — never commit
+**/.env
+**/.env.*
+!**/.env.example
+**/local_secrets.json
+**/*password*
+**/*secret*
+!**/.gitignore
+postman/*environment*.local.json
+*.pem
+*.pfx
+
+# Python / Node noise
+**/__pycache__/
+**/*.pyc
+**/.venv/
+**/node_modules/
+**/.pytest_cache/
+**/.mypy_cache/
+
+# OS / IDE scratch
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+
+# Spec Kitty runtime / derived (keep charter + config templates)
+.kittify/.dashboard
+.kittify/derived/
+.kittify/dossiers/
+.kittify/encoding-provenance/
+.kittify/events/
+.kittify/logs/
+.kittify/runtime/
+.kittify/workspaces/
+.kittify/missions/__pycache__/
+.kittify/merge-state.json
+.kittify/migrations/
+.kittify/sync-state.json
+.kittify/skills-manifest.json
+.kittify/charter/context-state.json
+.kittify/charter/directives.yaml
+.kittify/charter/governance.yaml
+.kittify/charter/metadata.yaml
+.kittify/charter/references.yaml
+
+# Large local evidence / screenshots stay on the machine (paths documented)
+# qa-evidence lives outside this repo under C:\WORK\qa-evidence\
+
+# Do NOT ignore project wiring we want on GitHub:
+# .cursor/agents, .cursor/rules, .agents/skills are tracked intentionally.

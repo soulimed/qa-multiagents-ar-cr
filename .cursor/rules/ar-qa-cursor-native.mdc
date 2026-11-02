@@ -1,0 +1,30 @@
+---
+description: AR QA uses Cursor-native Canvas + skills + visible browser — not a hosted Studio SPA
+alwaysApply: true
+---
+
+# AR QA — Cursor-native (no hosted Studio)
+
+Prefer this stack over building or running a separate QA Studio web app:
+
+1. **Skills** — `ar-qa-ticket-evidence`, `ar-qa-db-readonly`, `ar-qa-browser-visible`
+2. **Canvas** — durable QA run board beside chat (ticket, checklist, SQL samples, action strip, verdict)
+3. **Cursor Browser** — permanent visible tab for every UI automation step (slow type, narrate, screenshot)
+4. **MCP** — Jira / Bitbucket / Confluence via regnology MCP when the ticket lives on a connected site; otherwise open Jira in Cursor Browser
+
+## Do
+
+- On “test this ticket”: read Jira → branch UI / DB / API per `ar-qa-ticket-evidence`
+- Ask DB type + credentials before any SQL; Excel export when user asks to download
+- Ask API path: manual apidocs (browser) vs Postman/tool; honor Take control / interrupt
+- Open Cursor Browser with visible focus before AR UI/API clicks/typing
+- DB via read-only helper only (`ar-qa-db-readonly` scripts) — SELECT/WITH only
+- Evidence under `C:\WORK\qa-evidence\<KEY>_QA_evidence\`
+- Update the QA Canvas as checks complete
+
+## Do not
+
+- Claim UI was tested from API-only calls
+- Write to SQL Server (INSERT/UPDATE/DELETE/DDL)
+- Post Jira Pass/Fail without user confirmation (`ar-qa-ticket-evidence`)
+- Invest in a hosted FastAPI/React QA Studio as the primary UX

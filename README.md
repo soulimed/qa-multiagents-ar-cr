@@ -56,6 +56,7 @@ From [RAF/doctrine-product](https://bitbucket.regnology.net/projects/RAF/repos/d
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How layers fit |
 | [docs/INSTALL.md](docs/INSTALL.md) | Setup |
 | [docs/REPO_AUTO_UPDATE.md](docs/REPO_AUTO_UPDATE.md) | Teach → commit → push to GitHub |
+| **[docs/TEAM_KNOWLEDGE_SYNC.md](docs/TEAM_KNOWLEDGE_SYNC.md)** | **Team share:** clone / teach / push / pull — what syncs both ways |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Near-term roadmap |
 
 ---

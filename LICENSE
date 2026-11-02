@@ -1,0 +1,39 @@
+PROPRIETARY LICENSE — REGNOLOGY ONLY
+
+Copyright (c) 2026 Regnology and contributors authorized by Regnology.
+All rights reserved.
+
+This project (“QA MultiAgents for AR & CR”), including its source code, agents,
+skills, rules, documentation, scripts, Postman collections, and related
+materials, is dedicated for Regnology use only.
+
+1. Purpose
+   The software and materials in this repository exist to support Regnology
+   product and QA work (Agile Reporter, Compliance Reporter, and related
+   Cursor multi-agent workflows). They are not released as open source.
+
+2. Permitted use
+   Authorized Regnology employees and contractors may use, copy, and modify
+   this project solely for Regnology internal business purposes, subject to
+   applicable company policy and confidentiality obligations.
+
+3. Restrictions
+   Without prior written permission from Regnology you may not:
+   - use this project for any non-Regnology commercial product or service;
+   - publish, redistribute, sublicense, sell, or publicly host the materials;
+   - remove or alter this license notice or copyright attributions;
+   - share credentials, tokens, or environment secrets that belong with
+     Regnology systems (never commit secrets to git).
+
+4. No warranty
+   THE SOFTWARE AND DOCUMENTATION ARE PROVIDED “AS IS”, WITHOUT WARRANTY OF
+   ANY KIND. Regnology and contributors are not liable for damages arising
+   from use of this project. The project is not fully tested; validate on
+   each environment before relying on results.
+
+5. Ownership
+   Title, ownership rights, and intellectual property rights in this project
+   remain with Regnology (and any third-party components under their own
+   licenses). Nothing in this file grants rights outside the scope above.
+
+For licensing questions, contact Regnology legal / IP owners.

@@ -50,11 +50,15 @@ Known gaps from recent AR API work:
 - Postman MCP OAuth may fail (`No sign-in link`) on some Cursor workers — use Postman Desktop or local runner.  
 - Cursor IDE browser MCP may be missing on private workers — fall back to headed desktop browser and keep it open.
 
-## Roadmap (requested next)
+## Roadmap (requested next — must add)
 
 | Item | Intent |
 |------|--------|
-| **Remote Desktop to remote VM** | Drive / observe AR (or tools) on a remote Windows VM via RDP from the agent workflow, with the same “keep session visible” rule |
-| **Understand complex reporter** | Deeper AR / Agile Reporter domain understanding (multi-page returns, editions, validations, cross-vals, workflows) so agents reason about complex returns, not only smoke API/UI |
+| **Remote Desktop to remote VMs** | Connect via Remote Desktop to remote Windows VMs; keep the session visible so you can review the agent workflow |
+| **Configure Compliance Reporter** | Agents can configure CR (setup paths needed for real CR QA) |
+| **Understand all Compliance Reporter features** | Full CR feature coverage — not smoke-only |
+| **Complex Agile Reporter returns** | Deeper AR domain (editions, vals/xvals, privileges, UI ↔ REST) |
 
 Also desirable: harden Postman MCP auth, stabilize browser automation, expand delete/create API recipes, richer QA Studio / Canvas templates.
+
+**License:** Regnology-only proprietary — see [LICENSE](../LICENSE).

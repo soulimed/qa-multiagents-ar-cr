@@ -1,8 +1,10 @@
 # QA MultiAgents for AR & CR
 
-Cursor multi-agent project for **Agile Reporter (AR)** and **CR** QA.
+Cursor multi-agent project for **Agile Reporter (AR)** and **Compliance Reporter (CR)** QA.
 
 **GitHub:** https://github.com/soulimed/qa-multiagents-ar-cr  
+
+**License:** [LICENSE](LICENSE) — **proprietary, Regnology only.** All rights reserved. Not open source; use only for Regnology work.
 
 > **Not fully tested.** Needs a lot of improvement. See [docs/GAPS_AND_NEEDED.md](docs/GAPS_AND_NEEDED.md).
 
@@ -70,10 +72,14 @@ Rule: `.cursor/rules/repo-auto-sync.mdc` · Skill: `qa-repo-auto-sync`.
 
 ---
 
-## Roadmap (explicit)
+## Must add next (explicit)
 
-- Connect to **remote VM via Remote Desktop** and keep that session visible for review.  
-- Teach agents to **understand complex Agile Reporter** (pages, vals/xvals, editions, workflows).  
+1. **Remote Desktop to remote VMs** — connect via RDP, keep the remote session visible so you can review the workflow.  
+2. **Configure Compliance Reporter** — agents can set up / configure CR for QA.  
+3. **Understand all Compliance Reporter features** — full CR domain knowledge (not smoke-only).  
+4. Continue deepening **complex Agile Reporter** returns (pages, vals/xvals, editions, workflows).  
+
+Details: [docs/GAPS_AND_NEEDED.md](docs/GAPS_AND_NEEDED.md) · [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ---
 

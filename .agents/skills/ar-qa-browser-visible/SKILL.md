@@ -35,6 +35,7 @@ At the start of a UI QA run:
 2. Navigate to AR base URL (from user or secrets) with **visible** focus.
 3. Lock the tab while automating; unlock when done or on stop.
 4. Keep the tab open for the whole ticket run — do not close it between steps.
+5. **Never close the browser** at the end of a “watch” phase either while the user still needs to review the workflow. Prefer leaving the window open (idle) over `browser.close()` / killing Chrome. The point of this skill is human supervision of the agent’s workflow (with Canvas action strip), not a finished headless job.
 
 ## Action strip format (Canvas + evidence)
 

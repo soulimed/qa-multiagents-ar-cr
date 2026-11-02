@@ -1,0 +1,16 @@
+---
+description: After teachings or AR QA capability changes, update docs/skills and push to GitHub soulimed/qa-multiagents-ar-cr
+alwaysApply: true
+---
+
+# Repo auto-sync (Mohamed)
+
+When the user **teaches**, **corrects**, or **adds** something to this QA multi-agent project:
+
+1. Persist it in-repo (`docs/`, `.agents/skills/`, `.cursor/rules/`, `postman/`, etc.).
+2. Especially update `docs/FEATURES_FULL.md` / `docs/GAPS_AND_NEEDED.md` if behavior or inventory changed.
+3. Commit and **push** to `https://github.com/soulimed/qa-multiagents-ar-cr` via `scripts/sync-to-github.ps1` when credentials allow.
+4. Never commit secrets (`.env`, `local_secrets.json`, passwords, tokens).
+5. Tell the user the commit URL/sha when push succeeds; if push fails, say exactly what auth is missing.
+
+Do not leave teachings only in chat.

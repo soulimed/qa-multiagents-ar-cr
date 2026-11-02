@@ -1,70 +1,92 @@
 # QA MultiAgents for AR & CR
 
-Cursor multi-agent toolkit for **Agile Reporter (AR)** and **CR** QA, built on Regnology’s **doctrine-product** product desk and extended with visible-browser, Canvas, read-only DB, and API testing skills.
+Cursor multi-agent project for **Agile Reporter (AR)** and **CR** QA.
 
-> **Status:** Not fully tested end-to-end. Needs substantial improvement. Use as a starting kit; validate on your environment.
+**GitHub:** https://github.com/soulimed/qa-multiagents-ar-cr  
 
-## Upstream base
+> **Not fully tested.** Needs a lot of improvement. See [docs/GAPS_AND_NEEDED.md](docs/GAPS_AND_NEEDED.md).
 
-Product desk agents and install model come from:
+---
 
-**[RAF / doctrine-product](https://bitbucket.regnology.net/projects/RAF/repos/doctrine-product/browse)**  
-(branch used for install: `team/agile-reporter`)
+## What you review live (do not skip)
 
-| Agent | Profile | Role |
-|-------|---------|------|
-| Olga | `onboarding-olga` | Onboarding interview → pack/settings |
-| Clara | `clerk-clara` | Tickets |
-| Qata | `qa-qata` | QA / evidence |
-| Rela | `release-rela` | Release notes & readiness |
+### 1. Browser stays open
 
-## What we added for AR QA
+Skill **`ar-qa-browser-visible`**. The agent opens AR / apidocs in a **visible** browser and **must not close it** while working so **you can review the workflow**, Take control, or correct mistakes. Silent curl-only is **not** a UI test.
 
-- **Visible browser that stays open** — user can watch and correct (`ar-qa-browser-visible`).  
-- **Live Canvas** — step-by-step QA board beside chat.  
-- **Read-only DB query** — SELECT against existing env DB; no infra changes (`ar-qa-db-readonly`).  
-- **API testing** — AR apidocs + Postman collections (`ar-qa-api-apidocs`).  
-- Cursor-native rule preferring Canvas/skills/browser over a hosted Studio SPA.
+### 2. Canvas
 
-## Quick start
+A **live Canvas** beside chat shows current step, endpoints, pass/fail, and the same OPEN/TYPE/CLICK/SEE action strip as the browser.
 
-1. Clone this repo and open it in Cursor.  
-2. Follow [docs/INSTALL.md](docs/INSTALL.md) (doctrine-product wiring + local secrets).  
-3. Say **`Hey Qata`** for AR QA, or **`Hey Olga`** for desk onboarding.  
-4. Keep browser + Canvas visible during runs.
+### 3. API testing
 
-## Documentation
+Skill **`ar-qa-api-apidocs`** + Postman collections under `postman/`. Session login → lookup `returnId` → lock/create/etc. against `/agilereporter/rest/...`.
 
-| Doc | Content |
+### 4. SQL (read-only)
+
+Skill **`ar-qa-db-readonly`**. Query the env DB with **SELECT only**. No infra changes, no writes.
+
+### 5. MCP / plugins
+
+Regnology MCP (Jira/Bitbucket/Confluence), Cursor IDE Browser, Postman plugin, optional Atlassian / Disco / Juno. Full list: [docs/FEATURES_FULL.md](docs/FEATURES_FULL.md).
+
+---
+
+## Base agents (doctrine-product)
+
+From [RAF/doctrine-product](https://bitbucket.regnology.net/projects/RAF/repos/doctrine-product/browse):
+
+| Say | Agent |
+|-----|--------|
+| Hey Olga | Onboarding |
+| Hey Clara | Tickets |
+| Hey Qata | QA |
+| Hey Rela | Release |
+
+---
+
+## Documentation map
+
+| Doc | Purpose |
 |-----|---------|
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Desk base + AR extensions |
-| [docs/CAPABILITIES.md](docs/CAPABILITIES.md) | What works / what doesn’t |
-| [docs/AGENTS_AND_SKILLS.md](docs/AGENTS_AND_SKILLS.md) | Inventory |
+| **[docs/FEATURES_FULL.md](docs/FEATURES_FULL.md)** | **Complete** agents, skills, MCP, plugins, browser/Canvas/API/SQL |
+| **[docs/GAPS_AND_NEEDED.md](docs/GAPS_AND_NEEDED.md)** | What is missing + what to add (RDP, complex reporter, …) |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How layers fit |
 | [docs/INSTALL.md](docs/INSTALL.md) | Setup |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | RDP + complex reporter + maturity |
+| [docs/REPO_AUTO_UPDATE.md](docs/REPO_AUTO_UPDATE.md) | Teach → commit → push to GitHub |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Near-term roadmap |
 
-## Repo layout
+---
+
+## Teach the agent → GitHub updates
+
+Corrections and new capabilities must be written into this repo and pushed:
+
+```powershell
+.\scripts\sync-to-github.ps1 -Message "docs: your teaching summary"
+```
+
+Rule: `.cursor/rules/repo-auto-sync.mdc` · Skill: `qa-repo-auto-sync`.
+
+---
+
+## Roadmap (explicit)
+
+- Connect to **remote VM via Remote Desktop** and keep that session visible for review.  
+- Teach agents to **understand complex Agile Reporter** (pages, vals/xvals, editions, workflows).  
+
+---
+
+## Layout
 
 ```
-.cursor/agents/          Olga, Clara, Qata, Rela, desk
-.cursor/rules/           greetings, auto-route, AR QA native
-.agents/skills/          desk + AR QA + Spec Kitty skills
-product-desk/            desk settings (fill via Olga)
-postman/                 sample AR API collections (no secrets)
-docs/                    full documentation
+.cursor/agents/     Olga Clara Qata Rela desk
+.cursor/rules/      greetings, AR native, repo auto-sync
+.agents/skills/     AR QA + desk + Spec Kitty + qa-repo-auto-sync
+postman/            API collections (no secrets)
+docs/               full documentation
+scripts/            sync-to-github.ps1
+product-desk/       desk settings
 ```
 
-## Security
-
-Do **not** commit passwords, `.env`, or `local_secrets.json`. Redact evidence.
-
-## Roadmap highlights
-
-- Connect to remote VMs via **Remote Desktop** while keeping the session visible.  
-- Teach agents to **understand complex Agile Reporter** returns (pages, vals/xvals, workflows).  
-
-See [docs/ROADMAP.md](docs/ROADMAP.md).
-
-## License / ownership
-
-Internal Regnology / personal working copy for Mohamed Souli (`soulimed`). Respect doctrine-product and company IP rules when sharing outside the team.
+**Never commit passwords or tokens.**
